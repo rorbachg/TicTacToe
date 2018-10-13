@@ -75,7 +75,7 @@ class Window(QtWidgets.QWidget):
 
 
         self.setLayout(grid)
-        self.setWindowTitle('PyQt5 Lesson 5')
+        self.setWindowTitle('TicTacToe AI')
 
         self.b.clicked.connect(self.btn_click)
         self.b2.clicked.connect(self.btn_click)
