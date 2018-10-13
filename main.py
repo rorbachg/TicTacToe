@@ -87,14 +87,14 @@ if __name__ == "__main__":
     human = 1
     global ai
     ai = 2
-    size = 4
+    size = 3
     board_game = generate_board_game(size, False)
     print(board_game)
     players = ['human', 'ai']
-
     player = human
-    while True:
 
+
+    while True:
         if player == human:
             correct = False
             while not correct:
