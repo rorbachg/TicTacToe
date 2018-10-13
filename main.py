@@ -45,14 +45,17 @@ def win(board, player):
         return True
     return False
 
-def minimax(board, player):
+
+def minimax(board, player, depth):
+    depth += 1
+    #print(depth)
     avail_moves = available_moves(board)
 
     if win(board, human):
         return -10
     elif win(board, ai):
         return 10
-    elif len(avail_moves) == 0:
+    elif len(avail_moves) == 0 or depth == 5:
         return 0
 
     moves = []
@@ -63,12 +66,12 @@ def minimax(board, player):
         board[index[0]][index[1]] = player
 
         new_board = copy(board)
-
+        new_depth = copy(depth)
         if player == ai:
-            result = minimax(new_board, human)
+            result = minimax(new_board, human, depth)
             move.score = result.score if isinstance(result, Move) else result
         elif player == human:
-            result = minimax(new_board, ai)
+            result = minimax(new_board, ai, depth)
             move.score = result.score if isinstance(result, Move) else result
 
         board[index[0]][index[1]] = 0
@@ -84,20 +87,21 @@ if __name__ == "__main__":
     human = 1
     global ai
     ai = 2
-    size = 3
+    size = 4
     board_game = generate_board_game(size, False)
+    print(board_game)
     players = ['human', 'ai']
 
     player = human
     while True:
-        print(board_game)
+
         if player == human:
             correct = False
             while not correct:
                 move = input("type your move")
                 if len(move) == 2 and \
-                        3 > int(move[0]) >= 0 and \
-                        3 > int(move[1]) >= 0:
+                        size > int(move[0]) >= 0 and \
+                        size > int(move[1]) >= 0:
                     if board_game[int(move[0])][int(move[1])] == 0:
                         correct = True
                 else:
@@ -105,18 +109,20 @@ if __name__ == "__main__":
                     correct = False
             board_game[int(move[0])][int(move[1])] = player
         else:
-            moves = minimax(board_game, player)
+            depth = 0
+            moves = minimax(board_game, player, depth)
             print('AI moves to {}'.format(moves.index))
             board_game[moves.index[0]][moves.index[1]] = player
+        print(board_game)
+
         if win(board_game, player) is True:
             print("Player {} wins!".format(player))
-            print(board_game)
-
             break
+
         if len(available_moves(board_game)) == 0:
             print('It\'s tie!')
-            print(board_game)
             break
+
         if player == human:
             player = ai
         else:
