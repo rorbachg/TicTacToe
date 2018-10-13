@@ -3,8 +3,8 @@ from Move import Move
 from copy import copy
 
 
-def generate_board_game(test=False):
-    board = np.zeros((3, 3))
+def generate_board_game(size, test=False):
+    board = np.zeros((size, size))
     if test:
         # #CASE
         # board[0][0] = 1
@@ -84,21 +84,24 @@ if __name__ == "__main__":
     human = 1
     global ai
     ai = 2
-    board_game = generate_board_game(True)
+    size = 3
+    board_game = generate_board_game(size, False)
     players = ['human', 'ai']
 
-    player = ai
+    player = human
     while True:
         print(board_game)
         if player == human:
             correct = False
             while not correct:
                 move = input("type your move")
-                spot = board_game[int(move[0])][int(move[1])]
-                if spot == 0:
-                    correct = True
+                if len(move) == 2 and \
+                        3 > int(move[0]) >= 0 and \
+                        3 > int(move[1]) >= 0:
+                    if board_game[int(move[0])][int(move[1])] == 0:
+                        correct = True
                 else:
-                    print("You can't move here!")
+                    print("Illegal move!")
                     correct = False
             board_game[int(move[0])][int(move[1])] = player
         else:
